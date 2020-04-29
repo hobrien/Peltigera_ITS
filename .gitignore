@@ -1,0 +1,10 @@
+# Stupid Mac files
+*.DS_Store
+
+# snakemake files
+.snakemake
+
+# Python files
+__pycache__
+# Results folders
+Sequences/*

@@ -1,0 +1,8 @@
+ref_sequences:
+    Evol09: "FJ708820:FJ709040"
+    Mycol13: "KJ145910:KJ145926"
+    Bryol17: "MF067362:MF067375"
+references:
+    Evol09: "O'Brien 2009 Evolution https://doi.org/10.1111/j.1558-5646.2009.00685.x"
+    Mycol13: "Anstett 2013 Mycology https://doi.org/10.1080/21501203.2013.875955"
+    Bryol17: "Joneson 2017 Bryologist https://doi.org/10.1639/0007-2745-120.4.371"
