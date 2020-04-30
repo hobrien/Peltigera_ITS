@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import warnings
 from Bio import SeqIO
 from Bio import Entrez
 from collections import defaultdict
@@ -38,15 +39,18 @@ def invert_list_dict(list_dict):
 and return a dict with sequence descriptions as keys and species complexes as values
 """
 def make_lookup_table(blast_file_names, complexes_dict):
-    col_names=["qseqid", "qlen", "stitle", "slen", "pident", "length", "evalue", "bitscore"]
+    col_names=["qseqid", "qlen", "stitle", "qstart", "qend", "sstart", "send", "slen", "pident", "length", "evalue", "bitscore"]
     df = pd.concat([pd.read_table(file, names=col_names) for file in blast_file_names])
     df['sspecies'] = df['stitle'].str.extract('(Peltigera \w+)').str.slice_replace(1, 9, '.')
-    df = df[df['sspecies'] != 'Peltigera sp']
+    df = df[(df['sspecies'] != 'Peltigera sp') & (df['pident'] > 95)]
     df = df.sort_values('bitscore').groupby(['qseqid']).last()
+    for name in list(df[df['sstart'] > df['send']].index.values):
+        warnings.warn("%s in reverse strand. please reverse-complement" % name)
+    df = df[df['sstart'] < df['send']]
     df = df.join(pd.DataFrame.from_dict(complexes_dict, orient='index'), 'sspecies', how='inner')
     df = df.rename(columns={0: 'complex'})
-    return df['complex'].to_dict()
-    
+    return df['complex'].to_dict()  
+      
 """separate sequences into species complexes accoring to dict of species-complex dict
 - I think the easiest thing to do here is to just hold all sequences in memory
 I don't think there's ever going to be enough of them that this approach will
@@ -66,10 +70,19 @@ def separate_seqs(sequence_files, complexes, lookup='species'):
             try:
                 separated_seqs[complexes[key]].append(seq_record)
             except KeyError:
-                print("No complex for %s" % key)
+                warnings.warn("No complex for %s" % key)
     return separated_seqs
 
 
 if __name__ == '__main__':
     email = os.environ.get('EMAIL')
     download_seqs(expand_range("MF067362:MF067365"), "my_example.fa", email)
+    complexes = {'Pcan': ['P. canina', 'P. koponenii', 'P. praetextata', 'P. islandica', 'P. evansiana', 'P. fuscopraetextata'],
+             'Pleu': ['P. leucophlebia'], 
+             'Pcin': ['P. cinnamomea', 'P. neocanina'], 
+             'Paphth': ['P. aphthosa', 'P. britannica', 'P. malacea', 'P. chionophila'],
+             'Ppono': ['P. ponojensis', 'P. monticola']
+    }
+    lookup = make_lookup_table(["blast/ITS_Aug17.bl", "blast/ITS_Aug18.bl"], invert_list_dict(complexes))
+    for key in lookup:
+        print(key, lookup[key])

@@ -45,7 +45,7 @@ rule blast_queries:
     output:
         "blast/{query}.bl"
     params:
-        format = "'6 qseqid qlen stitle slen pident length evalue bitscore'",
+        format = "'6 qseqid qlen stitle qstart qend sstart send slen pident length evalue bitscore'",
         eval = '1e-150'
     shell:
         "blastn -outfmt {params.format} -query {input[0]} -db blast_db/ref -evalue {params.eval} -out {output}"
@@ -94,4 +94,6 @@ rule align_seqs:
         "SpeciesComplexes/{complex}/{complex}_aln.fa"
     shell:
         "mafft {input} > {output}"
-        
+
+
+  
