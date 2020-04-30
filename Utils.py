@@ -1,4 +1,5 @@
 import os
+import pandas as pd
 from Bio import SeqIO
 from Bio import Entrez
 from collections import defaultdict
@@ -33,24 +34,41 @@ def invert_list_dict(list_dict):
             inverted_dict[value] = key
     return inverted_dict
 
+"""Parse blast outputs, extract species of top hit, compare to species complex list
+and return a dict with sequence descriptions as keys and species complexes as values
+"""
+def make_lookup_table(blast_file_names, complexes_dict):
+    col_names=["qseqid", "qlen", "stitle", "slen", "pident", "length", "evalue", "bitscore"]
+    df = pd.concat([pd.read_table(file, names=col_names) for file in blast_file_names])
+    df['sspecies'] = df['stitle'].str.extract('(Peltigera \w+)').str.slice_replace(1, 9, '.')
+    df = df[df['sspecies'] != 'Peltigera sp']
+    df = df.sort_values('bitscore').groupby(['qseqid']).last()
+    df = df.join(pd.DataFrame.from_dict(complexes_dict, orient='index'), 'sspecies', how='inner')
+    df = df.rename(columns={0: 'complex'})
+    return df['complex'].to_dict()
+    
 """separate sequences into species complexes accoring to dict of species-complex dict
 - I think the easiest thing to do here is to just hold all sequences in memory
 I don't think there's ever going to be enough of them that this approach will
 be a problem. If it is, I can always refactor
 """
-def separate_seqs(sequence_file, complexes):
+def separate_seqs(sequence_files, complexes, lookup='species'):
     separated_seqs = defaultdict(list)
-    record_iterator = SeqIO.parse(sequence_file, "fasta")
-    for seq_record in record_iterator:
-        species = ' '.join(['P.', seq_record.description.split(' ')[2]])
-        try:
-            separated_seqs[complexes[species]].append(seq_record)
-        except KeyError:
-            print("No complex for %s" % species)
+    for sequence_file in sequence_files:
+        record_iterator = SeqIO.parse(sequence_file, "fasta")
+        for seq_record in record_iterator:
+            if lookup == 'species':
+                key = ' '.join(['P.', seq_record.description.split(' ')[2]])
+            elif lookup == 'description':
+                key = seq_record.description
+            else:
+                raise Exception("lookup not recognised. should be one of `species`, `description`")
+            try:
+                separated_seqs[complexes[key]].append(seq_record)
+            except KeyError:
+                print("No complex for %s" % key)
     return separated_seqs
-    
 
-#seq_dict = SeqIO.index("seqs.fasta", "fasta")
 
 if __name__ == '__main__':
     email = os.environ.get('EMAIL')

@@ -8,8 +8,7 @@ queries = glob_wildcards("QuerySequences/{query}.fa")
 
 rule all:
     input:
-        expand("blast/{query}.bl", query=queries[0]),
-        expand("SpeciesComplexes/{complex}/{complex}_ref.fa", complex=config['complexes']),
+        expand("SpeciesComplexes/{complex}/{complex}_{source}.fa", complex=config['complexes'], source=['ref', 'queries']),
 
 rule download_ref:
     params:
@@ -50,14 +49,32 @@ rule blast_queries:
     shell:
         "blastn -outfmt {params.format} -query {input[0]} -db blast_db/ref -out {output}"
 
-rule separate_seqs:
+rule separate_ref_seqs:
     input:
         rules.cat_seqs.output
     output:
         expand("SpeciesComplexes/{complex}/{complex}_ref.fa", complex=config['complexes'])
     run:
         complexes = invert_list_dict(config['complexes'])
-        separated_seqs = separate_seqs(input[0], complexes)
+        separated_seqs = separate_seqs(input, complexes)
         for sp_complex in separated_seqs:
             outfilename = os.path.join("SpeciesComplexes", sp_complex, "%s_ref.fa" % sp_complex)
             SeqIO.write(separated_seqs[sp_complex], outfilename, "fasta")
+            
+rule separate_query_seqs:
+    input:
+        blast = expand("blast/{query}.bl", query=queries[0]),
+        seqs = expand("QuerySequences/{query}.fa", query=queries[0])
+    output:
+        expand("SpeciesComplexes/{complex}/{complex}_queries.fa", complex=config['complexes'])
+    run:
+        complexes = make_lookup_table(input['blast'], invert_list_dict(config['complexes']))
+        separated_seqs = separate_seqs(input['seqs'], complexes, 'description')
+        for sp_complex in config['complexes']:
+            outfilename = os.path.join("SpeciesComplexes", sp_complex, "%s_queries.fa" % sp_complex)
+            if sp_complex in separated_seqs:
+                SeqIO.write(separated_seqs[sp_complex], outfilename, "fasta")
+            else:
+                open(outfilename, 'a').close()
+        
+
