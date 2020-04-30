@@ -8,7 +8,7 @@ queries = glob_wildcards("QuerySequences/{query}.fa")
 
 rule all:
     input:
-        expand("SpeciesComplexes/{complex}/{complex}.phy", complex=config['complexes'])
+        expand("SpeciesComplexes/{complex}/{complex}.nwk", complex=config['complexes'])
 
 rule download_ref:
     params:
@@ -102,3 +102,13 @@ rule trim_aln:
         "SpeciesComplexes/{complex}/{complex}.phy"
     shell:
         "trimal -in {input} -out {output} -phylip -gappyout"
+        
+rule run_phyml:
+    input:
+        rules.trim_aln.output
+    output:
+        "SpeciesComplexes/{complex}/{complex}.nwk"
+    shell:
+        "phyml  --quiet --no_memory_check -i {input} && mv {input}_phyml_tree {output}"
+
+
