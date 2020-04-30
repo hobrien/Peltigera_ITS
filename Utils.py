@@ -67,6 +67,8 @@ def separate_seqs(sequence_files, complexes, lookup='species'):
                 key = seq_record.description
             else:
                 raise Exception("lookup not recognised. should be one of `species`, `description`")
+            seq_record.id = seq_record.description.replace(' ', '_')
+            seq_record.description = ''
             try:
                 separated_seqs[complexes[key]].append(seq_record)
             except KeyError:
@@ -83,6 +85,9 @@ if __name__ == '__main__':
              'Paphth': ['P. aphthosa', 'P. britannica', 'P. malacea', 'P. chionophila'],
              'Ppono': ['P. ponojensis', 'P. monticola']
     }
-    lookup = make_lookup_table(["blast/ITS_Aug17.bl", "blast/ITS_Aug18.bl"], invert_list_dict(complexes))
+    complexes = invert_list_dict(complexes)
+    lookup = make_lookup_table(["blast/ITS_Aug17.bl", "blast/ITS_Aug18.bl"], complexes)
     for key in lookup:
         print(key, lookup[key])
+        
+    print(separate_seqs(["my_example.fa"], complexes, lookup='species'))

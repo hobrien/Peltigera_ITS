@@ -8,7 +8,7 @@ queries = glob_wildcards("QuerySequences/{query}.fa")
 
 rule all:
     input:
-        expand("SpeciesComplexes/{complex}/{complex}_aln.fa", complex=config['complexes'])
+        expand("SpeciesComplexes/{complex}/{complex}.phy", complex=config['complexes'])
 
 rule download_ref:
     params:
@@ -95,5 +95,10 @@ rule align_seqs:
     shell:
         "mafft {input} > {output}"
 
-
-  
+rule trim_aln:
+    input:
+        rules.align_seqs.output
+    output:
+        "SpeciesComplexes/{complex}/{complex}.phy"
+    shell:
+        "trimal -in {input} -out {output} -phylip -gappyout"
