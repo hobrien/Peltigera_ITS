@@ -25,7 +25,7 @@ rule cat_seqs:
     output:
         "RefSequences/all.fa"
     shell:
-        "cat {input} | sed 's/18S ribosomal RNA gene, partial sequence; internal transcribed spacer 1, 5.8S ribosomal RNA gene, and internal transcribed spacer 2, complete sequence; and 26S ribosomal RNA gene, partial sequence//' > {output}"
+        "cat {input} | perl -pe 's/((internal)|(18S)|(5.8S)).*//' > {output}"
 
 rule make_blast_db:
     input:
