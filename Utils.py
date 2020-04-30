@@ -1,6 +1,7 @@
+import os
 from Bio import SeqIO
 from Bio import Entrez
-email = "heath.obrien@gmail.com"  # Always tell NCBI who you are
+email = os.environ.get('EMAIL')
 
 """takes a range of alpha-numeric strings separated by `delim` and creates
 a `out_delim`-separated list by expanding the range of the numeric portion

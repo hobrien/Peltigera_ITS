@@ -1,6 +1,8 @@
 from Utils import *
+import os
 configfile: "config.yaml"
 
+email = os.environ.get('EMAIL')
 
 rule all:
     input:
@@ -12,21 +14,21 @@ rule download_ref:
     params:
         ref = lambda wildcards: config["ref_sequences"][wildcards.ref]
     output:
-        "Sequences/{ref}.fa"
+        "RefSequences/{ref}.fa"
     run:
         download_seqs(expand_range(params['ref']), output[0], email)
         
 rule cat_seqs:
     input:
-        expand("Sequences/{ref}.fa", ref=config["ref_sequences"])
+        expand("RefSequences/{ref}.fa", ref=config["ref_sequences"])
     output:
-        "Sequences/all.fa"
+        "RefSequences/all.fa"
     shell:
         "cat {input} > {output}"
 
 rule make_blast_db:
     input:
-        "Sequences/all.fa"
+        "RefSequences/all.fa"
     output:
         "blast_db/ref.nhr",
         "blast_db/ref.nin",

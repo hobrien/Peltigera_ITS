@@ -11,3 +11,5 @@ Peltigera ITS species identification pipeline
         - P. canina, P. koponenii, P. praetextata, P. islandica, P. evansiana, P. "fuscopraetextata"
     - Section Peltigera group D (Pcin)
         - P. cinnamomea, P. "neocanina"
+
+- `EMAIL` environmental variable needs to be set for this to work. The easiest way to do this is to add "export EMAIL=..." to `~/.bash_profile`

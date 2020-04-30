@@ -8,6 +8,6 @@
 __pycache__
 
 # Results folders
-Sequences
+RefSequences
 blast_db
 
