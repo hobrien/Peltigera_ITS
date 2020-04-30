@@ -9,7 +9,9 @@ __pycache__
 
 # input folders
 QuerySequences
+
 # Results folders
+SpeciesComplexes
 RefSequences
 blast_db
 logs

@@ -1,7 +1,7 @@
 import os
 from Bio import SeqIO
 from Bio import Entrez
-email = os.environ.get('EMAIL')
+from collections import defaultdict
 
 """takes a range of alpha-numeric strings separated by `delim` and creates
 a `out_delim`-separated list by expanding the range of the numeric portion
@@ -22,7 +22,36 @@ def download_seqs(accessions, filename, email, db='nucleotide', filetype='fasta'
     handle = Entrez.efetch(db=db, id=accessions, rettype=filetype, retmode="text")
     return SeqIO.write(SeqIO.parse(handle, filetype), filename, filetype)
 
+"""takes dict with lists as values and returns a dict where each list member is a key
+and the values are the original dic keys; eg {'A':[1,2,3], 'B':[4,5]} -> {1:'A',2:'A',3:'A',4:'B',5:'B'}
+"""
+def invert_list_dict(list_dict):
+    inverted_dict = {}
+    for key in list_dict:
+        for value in list_dict[key]:
+            assert value not in inverted_dict
+            inverted_dict[value] = key
+    return inverted_dict
+
+"""separate sequences into species complexes accoring to dict of species-complex dict
+- I think the easiest thing to do here is to just hold all sequences in memory
+I don't think there's ever going to be enough of them that this approach will
+be a problem. If it is, I can always refactor
+"""
+def separate_seqs(sequence_file, complexes):
+    separated_seqs = defaultdict(list)
+    record_iterator = SeqIO.parse(sequence_file, "fasta")
+    for seq_record in record_iterator:
+        species = ' '.join(['P.', seq_record.description.split(' ')[2]])
+        try:
+            separated_seqs[complexes[species]].append(seq_record)
+        except KeyError:
+            print("No complex for %s" % species)
+    return separated_seqs
+    
+
 #seq_dict = SeqIO.index("seqs.fasta", "fasta")
 
 if __name__ == '__main__':
+    email = os.environ.get('EMAIL')
     download_seqs(expand_range("MF067362:MF067365"), "my_example.fa", email)

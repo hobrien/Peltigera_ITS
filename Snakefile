@@ -8,20 +8,8 @@ queries = glob_wildcards("QuerySequences/{query}.fa")
 
 rule all:
     input:
-        expand("blast/{query}.bl", query=queries[0])
-
-rule blast_queries:
-    input:
-        "QuerySequences/{query}.fa",
-        "blast_db/ref.nhr",
-        "blast_db/ref.nin",
-        "blast_db/ref.nsq"
-    output:
-        "blast/{query}.bl"
-    params:
-        format="'6 qseqid qlen stitle slen pident length evalue bitscore'"
-    shell:
-        "blastn -outfmt {params.format} -query {input[0]} -db blast_db/ref -out {output}"
+        expand("blast/{query}.bl", query=queries[0]),
+        expand("SpeciesComplexes/{complex}/{complex}_ref.fa", complex=config['complexes']),
 
 rule download_ref:
     params:
@@ -48,3 +36,28 @@ rule make_blast_db:
         "blast_db/ref.nsq"
     shell:
         "makeblastdb -dbtype nucl -in {input} -out blast_db/ref"
+        
+rule blast_queries:
+    input:
+        "QuerySequences/{query}.fa",
+        "blast_db/ref.nhr",
+        "blast_db/ref.nin",
+        "blast_db/ref.nsq"
+    output:
+        "blast/{query}.bl"
+    params:
+        format="'6 qseqid qlen stitle slen pident length evalue bitscore'"
+    shell:
+        "blastn -outfmt {params.format} -query {input[0]} -db blast_db/ref -out {output}"
+
+rule separate_seqs:
+    input:
+        rules.cat_seqs.output
+    output:
+        expand("SpeciesComplexes/{complex}/{complex}_ref.fa", complex=config['complexes'])
+    run:
+        complexes = invert_list_dict(config['complexes'])
+        separated_seqs = separate_seqs(input[0], complexes)
+        for sp_complex in separated_seqs:
+            outfilename = os.path.join("SpeciesComplexes", sp_complex, "%s_ref.fa" % sp_complex)
+            SeqIO.write(separated_seqs[sp_complex], outfilename, "fasta")
