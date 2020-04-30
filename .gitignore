@@ -6,5 +6,8 @@
 
 # Python files
 __pycache__
+
 # Results folders
-Sequences/*
+Sequences
+blast_db
+
