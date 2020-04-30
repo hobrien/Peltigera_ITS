@@ -8,7 +8,7 @@ queries = glob_wildcards("QuerySequences/{query}.fa")
 
 rule all:
     input:
-        expand("SpeciesComplexes/{complex}/{complex}_{source}.fa", complex=config['complexes'], source=['ref', 'queries']),
+        expand("SpeciesComplexes/{complex}/{complex}_aln.fa", complex=config['complexes'])
 
 rule download_ref:
     params:
@@ -18,7 +18,7 @@ rule download_ref:
     run:
         download_seqs(expand_range(params['ref']), output[0], email)
         
-rule cat_seqs:
+rule cat_ref_seqs:
     input:
         expand("RefSequences/{ref}.fa", ref=config["ref_sequences"])
     output:
@@ -52,7 +52,7 @@ rule blast_queries:
 
 rule separate_ref_seqs:
     input:
-        rules.cat_seqs.output
+        rules.cat_ref_seqs.output
     output:
         expand("SpeciesComplexes/{complex}/{complex}_ref.fa", complex=config['complexes'])
     run:
@@ -77,5 +77,21 @@ rule separate_query_seqs:
                 SeqIO.write(separated_seqs[sp_complex], outfilename, "fasta")
             else:
                 open(outfilename, 'a').close()
-        
 
+rule cat_seqs:
+    input:
+        "SpeciesComplexes/{complex}/{complex}_ref.fa", 
+        "SpeciesComplexes/{complex}/{complex}_queries.fa"
+    output:
+        "SpeciesComplexes/{complex}/{complex}_all.fa"
+    shell:
+        "cat {input} > {output}"
+        
+rule align_seqs:
+    input:
+        rules.cat_seqs.output
+    output:
+        "SpeciesComplexes/{complex}/{complex}_aln.fa"
+    shell:
+        "mafft {input} > {output}"
+        
