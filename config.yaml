@@ -15,7 +15,7 @@ complexes:
     Pleu:
         - P. leucophlebia
     Pcan:
-        - P. canina, 
+        - P. canina 
         - P. koponenii
         - P. praetextata
         - P. islandica
@@ -27,3 +27,11 @@ complexes:
     Ppono:
         - P. ponojensis
         - P. monticola
+    Ppoly:
+        - P. polydactylon
+        - P. neopolydactyla
+    Phor:
+        - P. horizontalis
+        - P. collina
+        - P. neckeri
+

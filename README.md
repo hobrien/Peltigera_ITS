@@ -7,6 +7,10 @@ Peltigera ITS species identification pipeline
         - P. aphthosa, P. britannica, P. malacea, P. chionophila
     - Section Chloropeltigera (Pleu)
         - P. leucophlebia Clade I, P. leucophlebia Clade II, P. leucophlebia Clade III, 
+    - Section Polydactylon (Ppoly)
+        - P. polydactylon, P. neopolydactyla
+    - Section Horizontales (Phor)
+        - P. horizontalis, P.collina, P. neckeri
     - Section Peltigera group A (Ppono)
         - P. ponojensis, P. monticola
     - Section Peltigera group C (Pcan)
