@@ -4,12 +4,25 @@ configfile: "config.yaml"
 
 email = os.environ.get('EMAIL')
 
+queries = glob_wildcards("QuerySequences/{query}.fa")
+
 rule all:
     input:
+        expand("blast/{query}.bl", query=queries[0])
+
+rule blast_queries:
+    input:
+        "QuerySequences/{query}.fa",
         "blast_db/ref.nhr",
         "blast_db/ref.nin",
         "blast_db/ref.nsq"
-        
+    output:
+        "blast/{query}.bl"
+    params:
+        format="'6 qseqid qlen stitle slen pident length evalue bitscore'"
+    shell:
+        "blastn -outfmt {params.format} -query {input[0]} -db blast_db/ref -out {output}"
+
 rule download_ref:
     params:
         ref = lambda wildcards: config["ref_sequences"][wildcards.ref]
@@ -24,7 +37,7 @@ rule cat_seqs:
     output:
         "RefSequences/all.fa"
     shell:
-        "cat {input} > {output}"
+        "cat {input} | sed 's/18S ribosomal RNA gene, partial sequence; internal transcribed spacer 1, 5.8S ribosomal RNA gene, and internal transcribed spacer 2, complete sequence; and 26S ribosomal RNA gene, partial sequence//' > {output}"
 
 rule make_blast_db:
     input:

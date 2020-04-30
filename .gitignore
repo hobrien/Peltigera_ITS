@@ -7,7 +7,11 @@
 # Python files
 __pycache__
 
+# input folders
+QuerySequences
 # Results folders
 RefSequences
 blast_db
+logs
+blast
 
