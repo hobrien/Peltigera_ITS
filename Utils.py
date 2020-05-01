@@ -1,4 +1,5 @@
 import os
+import re
 import pandas as pd
 import warnings
 from Bio import SeqIO
@@ -7,15 +8,21 @@ from collections import defaultdict
 
 """takes a range of alpha-numeric strings separated by `delim` and creates
 a `out_delim`-separated list by expanding the range of the numeric portion
-eg; "AJ1:AJ4" -> ["AJ1 AJ2 AJ3 AJ4"]
+eg; "AJ1:AJ4,BG5" -> ["AJ1 AJ2 AJ3 AJ4 BG5"]
 numeric poriton must be at the end of the string, and the number of
 non-numeric characters must be specified (`num_letters`)
 """
-def expand_range(range_string, num_letters=2, delim=':', out_delim=' '):
-    letters=range_string[:num_letters]
-    digits_length=len(range_string.split(delim)[0])-num_letters
-    (start, end) = [int(string[num_letters:]) for string in range_string.split(delim)]
-    return out_delim.join(letters + str(num).rjust(digits_length, '0') for num in range(start, end+1))
+def expand_range(range_strings, num_letters=2, range_delim=':', list_delim=',', out_delim=' '):
+    out_list = []
+    for range_string in range_strings.split(','):
+        if ':' in range_string:
+            letters=range_string[:num_letters]
+            digits_length=len(range_string.split(range_delim)[0])-num_letters
+            (start, end) = [int(string[num_letters:]) for string in range_string.split(range_delim)]
+            out_list = out_list + [letters + str(num).rjust(digits_length, '0') for num in range(start, end+1)]
+        else:
+            out_list.append(range_string)
+    return out_delim.join(out_list)
         
 """eg download_seqs(expand_range("FJ708820 FJ708821 FJ708822 FJ708823"), "my_example.fa", email)
 """
@@ -68,6 +75,7 @@ def separate_seqs(sequence_files, complexes, lookup='species'):
             else:
                 raise Exception("lookup not recognised. should be one of `species`, `description`")
             seq_record.id = seq_record.description.replace(' ', '_')
+            seq_record.id =  re.sub(r'_*\([^)]*\)', '', seq_record.id)
             seq_record.description = ''
             try:
                 separated_seqs[complexes[key]].append(seq_record)
@@ -78,7 +86,7 @@ def separate_seqs(sequence_files, complexes, lookup='species'):
 
 if __name__ == '__main__':
     email = os.environ.get('EMAIL')
-    download_seqs(expand_range("MF067362:MF067365"), "my_example.fa", email)
+    download_seqs(expand_range("KC139749:KC139751,KC139753:KC139761,KJ413197,KJ413220:KJ413226,KJ413246:KJ413250,KJ616384:KJ616388,KT861422:KT861425,KT948755:KT948756,KU954062:KU954063"), "RefSequences/Lichenol16.fa", email)
     complexes = {'Pcan': ['P. canina', 'P. koponenii', 'P. praetextata', 'P. islandica', 'P. evansiana', 'P. fuscopraetextata'],
              'Pleu': ['P. leucophlebia'], 
              'Pcin': ['P. cinnamomea', 'P. neocanina'], 
@@ -90,4 +98,4 @@ if __name__ == '__main__':
     for key in lookup:
         print(key, lookup[key])
         
-    print(separate_seqs(["my_example.fa"], complexes, lookup='species'))
+    print(separate_seqs(["RefSequences/Lichenol16.fa"], complexes, lookup='species'))
