@@ -2,10 +2,12 @@ ref_sequences:
     Evol09:  "FJ708820:FJ709040"
     Mycol13: "KJ145910:KJ145926"
     Bryol17: "MF067362:MF067375"
+    Lichenol16: "KC139749:KC139751,KC139753:KC139761,KJ413197,KJ413220:KJ413226,KJ413246:KJ413250,KJ616384:KJ616388,KT861422:KT861425,KT948755:KT948756,KU954062:KU954063"
 references:
     Evol09: "O'Brien 2009 Evolution https://doi.org/10.1111/j.1558-5646.2009.00685.x"
     Mycol13: "Anstett 2013 Mycology https://doi.org/10.1080/21501203.2013.875955"
     Bryol17: "Joneson 2017 Bryologist https://doi.org/10.1639/0007-2745-120.4.371"
+    Lichenol16: "MANOHARAN-BASIL 2016 Lichenologist https://doi.org/10.1017/S0024282916000414"
 complexes:
     Paphth:
         - P. aphthosa
