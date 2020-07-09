@@ -8,6 +8,7 @@ references:
     Mycol13: "Anstett 2013 Mycology https://doi.org/10.1080/21501203.2013.875955"
     Bryol17: "Joneson 2017 Bryologist https://doi.org/10.1639/0007-2745-120.4.371"
     Lichenol16: "MANOHARAN-BASIL 2016 Lichenologist https://doi.org/10.1017/S0024282916000414"
+    Mycologia03: "Miadlikowska 2003 Mycologia https://doi.org/10.1080/15572536.2004.11833027"
 complexes:
     Paphth:
         - P. aphthosa
@@ -36,4 +37,6 @@ complexes:
         - P. horizontalis
         - P. collina
         - P. neckeri
-
+    Pruf:
+        - P. rufescens
+        - P. neorufescens
