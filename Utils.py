@@ -44,6 +44,8 @@ def invert_list_dict(list_dict):
 
 """Parse blast outputs, extract species of top hit, compare to species complex list
 and return a dict with sequence descriptions as keys and species complexes as values
+
+returns a two-item tuple. first item includes all seqs. second includes only sequences to be reverse-complemented
 """
 def make_lookup_table(blast_file_names, complexes_dict):
     col_names=["qseqid", "qlen", "stitle", "qstart", "qend", "sstart", "send", "slen", "pident", "length", "evalue", "bitscore"]
@@ -52,16 +54,20 @@ def make_lookup_table(blast_file_names, complexes_dict):
     df = df[(df['sspecies'] != 'Peltigera sp') & (df['pident'] > 95)]
     df = df.sort_values('bitscore').groupby(['qseqid']).last()
     for name in list(df[df['sstart'] > df['send']].index.values):
-        warnings.warn("%s in reverse strand. please reverse-complement" % name)
-    df = df[df['sstart'] < df['send']]
+        warnings.warn("%s in reverse strand" % name)
+    df_rc = df[df['sstart'] > df['send']]
+    df_rc = df_rc.join(pd.DataFrame.from_dict(complexes_dict, orient='index'), 'sspecies', how='inner')
+    df_rc = df_rc.rename(columns={0: 'complex'})
     df = df.join(pd.DataFrame.from_dict(complexes_dict, orient='index'), 'sspecies', how='inner')
     df = df.rename(columns={0: 'complex'})
-    return df['complex'].to_dict()  
+    return (df['complex'].to_dict(), df_rc['complex'].to_dict())
       
-"""separate sequences into species complexes accoring to dict of species-complex dict
+"""separate sequences into species complexes accoring to dict of species-complex
 - I think the easiest thing to do here is to just hold all sequences in memory
 I don't think there's ever going to be enough of them that this approach will
 be a problem. If it is, I can always refactor
+
+complexes is a two-item tuple. first item includes all seqs. second includes only sequences to be reverse-complemented
 """
 def separate_seqs(sequence_files, complexes, lookup='species'):
     separated_seqs = defaultdict(list)
@@ -74,11 +80,13 @@ def separate_seqs(sequence_files, complexes, lookup='species'):
                 key = seq_record.description
             else:
                 raise Exception("lookup not recognised. should be one of `species`, `description`")
+            seq_record.description =  re.sub(r'\([^)]*\)', '', seq_record.description)
             seq_record.id = seq_record.description.replace(' ', '_')
-            seq_record.id =  re.sub(r'_*\([^)]*\)', '', seq_record.id)
             seq_record.description = ''
+            if key in complexes[1]:
+                seq_record.seq = seq_record.seq.reverse_complement()
             try:
-                separated_seqs[complexes[key]].append(seq_record)
+                separated_seqs[complexes[0][key]].append(seq_record)
             except KeyError:
                 warnings.warn("No complex for %s" % key)
     return separated_seqs
