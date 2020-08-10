@@ -3,12 +3,15 @@ ref_sequences:
     Mycol13: "KJ145910:KJ145926"
     Bryol17: "MF067362:MF067375"
     Lichenol16: "KC139749:KC139751,KC139753:KC139761,KJ413197,KJ413220:KJ413226,KJ413246:KJ413250,KJ616384:KJ616388,KT861422:KT861425,KT948755:KT948756,KU954062:KU954063"
+    Mycologia03: "AY257896,AY257952,AY257953,AY257900,AY257950,AY257951,AY257911,AY257912,AY257914,AY257948,AY257949,AY257943:AY257945,AY257897:AY257899,AY257913,AY257954,AY257955,AY257872:AY257875,AY257877,AY257879,AY257881,AY257883:AY257886"
+    Taxon18: "MH758467,MH758469:MH758475,MH758478,MH758479,MH758379,MH758491:MH758494,MH758500,MH758502,MH758503,MH758505:MH758509,MH758384:MH758387,MH758389,MH758390:MH758394,MH758397,MH758398,MH758276:MH758314,MH758510,MH758513:MH758516,MH758518:MH758524"
 references:
     Evol09: "O'Brien 2009 Evolution https://doi.org/10.1111/j.1558-5646.2009.00685.x"
     Mycol13: "Anstett 2013 Mycology https://doi.org/10.1080/21501203.2013.875955"
     Bryol17: "Joneson 2017 Bryologist https://doi.org/10.1639/0007-2745-120.4.371"
     Lichenol16: "MANOHARAN-BASIL 2016 Lichenologist https://doi.org/10.1017/S0024282916000414"
     Mycologia03: "Miadlikowska 2003 Mycologia https://doi.org/10.1080/15572536.2004.11833027"
+    Taxon18: "Magain 2018 Taxon https://doi.org/10.12705/675.3"
 complexes:
     Paphth:
         - P. aphthosa
@@ -24,6 +27,7 @@ complexes:
         - P. islandica
         - P. evansiana
         - P. fuscopraetextata
+        - P. pallidorufescens
     Pcin:
         - P. cinnamomea
         - P. neocanina
@@ -40,3 +44,24 @@ complexes:
     Pruf:
         - P. rufescens
         - P. neorufescens
+    Pkris:
+        - P. kristinssonii
+    Pmemb:
+        - P. degenii
+        - P. membranacea
+manual_refs:
+    AY257896: Pcan
+    AY257897: Pcin
+    AY257913: Pcin
+    AY257914: Pcan
+    AY257886: Ppono
+    FJ708907: Pcan
+    FJ708908: Pcan
+    FJ708909: Pcan
+    FJ708910: Pcan
+    KC139757: Pcan
+    KC139759: Pcan
+    KC139760: Pcan
+    KC139761: Pcan
+    
+    

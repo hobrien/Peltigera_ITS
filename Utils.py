@@ -69,26 +69,31 @@ be a problem. If it is, I can always refactor
 
 complexes is a two-item tuple. first item includes all seqs. second includes only sequences to be reverse-complemented
 """
-def separate_seqs(sequence_files, complexes, lookup='species'):
+def separate_seqs(sequence_files, complexes, lookup, manual_refs={}):
     separated_seqs = defaultdict(list)
     for sequence_file in sequence_files:
         record_iterator = SeqIO.parse(sequence_file, "fasta")
         for seq_record in record_iterator:
-            if lookup == 'species':
-                key = ' '.join(['P.', seq_record.description.split(' ')[2]])
-            elif lookup == 'description':
-                key = seq_record.description
+            if seq_record.id.split('.')[0] in manual_refs:
+                key = manual_refs[seq_record.id.split('.')[0]]
             else:
-                raise Exception("lookup not recognised. should be one of `species`, `description`")
+                if lookup == 'species':
+                    id = ' '.join(['P.', seq_record.description.split(' ')[2]])
+                elif lookup == 'description':
+                    id = seq_record.description
+                else:
+                    raise Exception("lookup not recognised. should be one of `species`, `description`")
+                try:
+                    key = complexes[0][id]
+                except KeyError:
+                    warnings.warn("No complex for %s (%s)" % (id, seq_record.id))
+                if id in complexes[1]:
+                    seq_record.seq = seq_record.seq.reverse_complement()
+
             seq_record.description =  re.sub(r'\([^)]*\)', '', seq_record.description)
             seq_record.id = seq_record.description.replace(' ', '_')
             seq_record.description = ''
-            if key in complexes[1]:
-                seq_record.seq = seq_record.seq.reverse_complement()
-            try:
-                separated_seqs[complexes[0][key]].append(seq_record)
-            except KeyError:
-                warnings.warn("No complex for %s" % key)
+            separated_seqs[key].append(seq_record)
     return separated_seqs
 
 
