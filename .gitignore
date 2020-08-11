@@ -13,6 +13,7 @@ __pycache__
 QuerySequences
 
 # Results folders
+Trees
 SpeciesComplexes
 RefSequences
 blast_db

@@ -57,7 +57,7 @@ rule separate_ref_seqs:
         expand("SpeciesComplexes/{complex}/{complex}_ref.fa", complex=config['complexes'])
     run:
         complexes = (invert_list_dict(config['complexes']), {})
-        separated_seqs = separate_seqs(input, complexes, "species", config['manual_refs'])
+        separated_seqs = separate_seqs(input, complexes, "species", config['excluded_ref'], config['manual_refs'])
         for sp_complex in separated_seqs:
             outfilename = os.path.join("SpeciesComplexes", sp_complex, "%s_ref.fa" % sp_complex)
             SeqIO.write(separated_seqs[sp_complex], outfilename, "fasta")
@@ -70,7 +70,7 @@ rule separate_query_seqs:
         expand("SpeciesComplexes/{complex}/{complex}_queries.fa", complex=config['complexes'])
     run:
         complexes = make_lookup_table(input['blast'], invert_list_dict(config['complexes']))
-        separated_seqs = separate_seqs(input['seqs'], complexes, 'description')
+        separated_seqs = separate_seqs(input['seqs'], complexes, 'description', config['excluded_query'])
         for sp_complex in config['complexes']:
             outfilename = os.path.join("SpeciesComplexes", sp_complex, "%s_queries.fa" % sp_complex)
             if sp_complex in separated_seqs:

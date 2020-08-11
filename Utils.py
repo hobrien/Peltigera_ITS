@@ -69,11 +69,15 @@ be a problem. If it is, I can always refactor
 
 complexes is a two-item tuple. first item includes all seqs. second includes only sequences to be reverse-complemented
 """
-def separate_seqs(sequence_files, complexes, lookup, manual_refs={}):
+def separate_seqs(sequence_files, complexes, lookup, excluded, manual_refs={}):
     separated_seqs = defaultdict(list)
+    excluded = set(excluded)
     for sequence_file in sequence_files:
         record_iterator = SeqIO.parse(sequence_file, "fasta")
         for seq_record in record_iterator:
+            if seq_record.id in excluded:
+                continue
+            seq_record.description = seq_record.description.replace("aff. ", "")
             if seq_record.id.split('.')[0] in manual_refs:
                 key = manual_refs[seq_record.id.split('.')[0]]
             else:
@@ -89,8 +93,7 @@ def separate_seqs(sequence_files, complexes, lookup, manual_refs={}):
                     warnings.warn("No complex for %s (%s)" % (id, seq_record.id))
                 if id in complexes[1]:
                     seq_record.seq = seq_record.seq.reverse_complement()
-
-            seq_record.description =  re.sub(r'\([^)]*\)', '', seq_record.description)
+            seq_record.description = re.sub(r'\([^)]*\)', '', seq_record.description)
             seq_record.id = seq_record.description.replace(' ', '_')
             seq_record.description = ''
             separated_seqs[key].append(seq_record)
