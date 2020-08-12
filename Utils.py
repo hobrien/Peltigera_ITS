@@ -91,6 +91,7 @@ def separate_seqs(sequence_files, complexes, lookup, excluded, manual_refs={}):
                     key = complexes[0][id]
                 except KeyError:
                     warnings.warn("No complex for %s (%s)" % (id, seq_record.id))
+                    continue
                 if id in complexes[1]:
                     seq_record.seq = seq_record.seq.reverse_complement()
             seq_record.description = re.sub(r'\([^)]*\)', '', seq_record.description)
