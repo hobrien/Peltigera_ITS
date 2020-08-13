@@ -1,31 +1,33 @@
 ref_sequences:
-    Evol09:  "FJ708820:FJ709040"
-    Mycol13: "KJ145910:KJ145926"
-    Bryol17: "MF067362:MF067375"
-    Lichenol16: "KC139749:KC139751,KC139753:KC139761,KJ413197,KJ413220:KJ413226,KJ413238:KJ413244,KJ413246:KJ413250,KJ616384:KJ616388,KT861422:KT861425,KT948755:KT948756,KU954062:KU954063"
     Mycologia03: "AY257896,AY257952,AY257953,AY257900,AY257950,AY257951,AY257911,AY257912,AY257914,AY257948,AY257949,AY257943:AY257945,AY257897:AY257899,AY257913,AY257954,AY257955,AY257872:AY257875,AY257877,AY257879,AY257881,AY257883:AY257886"
-    Taxon18: "MH758276:MH758314,MH758379,MH758384:MH758387,MH758389,MH758390:MH758394,MH758397,MH758398,MH758467,MH758469:MH758475,MH758478,MH758479,MH758491:MH758494,MH758500,MH758502,MH758503,MH758505:MH758509,MH758510,MH758513:MH758516,MH758518:MH758524"
-    JEcol19: "MK517826:MK517838"
-    SystBiol16: "KX897177:KX897401"
-    FungalEcol17: "LT852805:LT853056"
-    AmJBot14: "KM005774:KM005789"
+    Evol09:  "FJ708820:FJ709040"
     OpPhil11: "JF837354:JF837374"
-    FrontMicro18: "MH734627:MH734726"
+    Mycol13: "KJ145910:KJ145926"
     NewPhytol13: "KC437590:KC437650"
+    AmJBot14: "KM005774:KM005789"
+    Lichenol16: "KC139749:KC139751,KC139753:KC139761,KJ413197,KJ413220:KJ413226,KJ413238:KJ413244,KJ413246:KJ413250,KJ616384:KJ616388,KT861422:KT861425,KT948755:KT948756,KU954062:KU954063"
+    SystBiol16: "KX897177:KX897401"
+    Bryol17: "MF067362:MF067375"
+    FungalEcol17: "LT852805:LT853056"
+    Taxon18: "MH758276:MH758314,MH758379,MH758384:MH758387,MH758389,MH758390:MH758394,MH758397,MH758398,MH758467,MH758469:MH758475,MH758478,MH758479,MH758491:MH758494,MH758500,MH758502,MH758503,MH758505:MH758509,MH758510,MH758513:MH758516,MH758518:MH758524"
+    FrontMicro18: "MH734627:MH734726"
+    Oecologia18: "MH976668:MH976695"
+    JEcol19: "MK517826:MK517838"
 references:
-    Evol09: "O'Brien 2009 Evolution https://doi.org/10.1111/j.1558-5646.2009.00685.x"
-    Mycol13: "Anstett 2013 Mycology https://doi.org/10.1080/21501203.2013.875955"
-    Bryol17: "Joneson 2017 Bryologist https://doi.org/10.1639/0007-2745-120.4.371"
-    Lichenol16: "MANOHARAN-BASIL 2016 Lichenologist https://doi.org/10.1017/S0024282916000414"
     Mycologia03: "Miadlikowska 2003 Mycologia https://doi.org/10.1080/15572536.2004.11833027"
-    Taxon18: "Magain 2018 Taxon https://doi.org/10.12705/675.3"
-    JEcol19: "Chagnon 2019 J. Ecol. https://doi.org/10.1111/1365-2745.13207"
-    SystBiol16: "Magain 2016 Syst. Biol. https://doi.org/10.1093/sysbio/syw065"
-    FungalEcol17: "Juriado 2017 Fungal Ecol. https://doi.org/10.1016/j.funeco.2017.08.004"
-    AmJBot14: "Miadlikowska 2014 Am. J. Bot. https://doi.org/10.3732/ajb.1400267"
+    Evol09: "O'Brien 2009 Evolution https://doi.org/10.1111/j.1558-5646.2009.00685.x"
     OpPhil11: "Lendemer 2011 Opuscula Philolichenum http://sweetgum.nybg.org/science/op/biblio_list.php?BucVolume_tab=9"
-    FrontMicro18: "Pardo-De la Hoz 2018 Frontiers in Microbiology https://doi.org/10.3389/fmicb.2018.02770"
+    Mycol13: "Anstett 2013 Mycology https://doi.org/10.1080/21501203.2013.875955"
     NewPhytol13: "O'Brien 2013 New Phytologist https://doi.org/10.1111/nph.12165"
+    AmJBot14: "Miadlikowska 2014 Am. J. Bot. https://doi.org/10.3732/ajb.1400267"
+    Lichenol16: "MANOHARAN-BASIL 2016 Lichenologist https://doi.org/10.1017/S0024282916000414"
+    SystBiol16: "Magain 2016 Syst. Biol. https://doi.org/10.1093/sysbio/syw065"
+    Bryol17: "Joneson 2017 Bryologist https://doi.org/10.1639/0007-2745-120.4.371"
+    FungalEcol17: "Juriado 2017 Fungal Ecol. https://doi.org/10.1016/j.funeco.2017.08.004"
+    Taxon18: "Magain 2018 Taxon https://doi.org/10.12705/675.3"
+    FrontMicro18: "Pardo-De la Hoz 2018 Frontiers in Microbiology https://doi.org/10.3389/fmicb.2018.02770"
+    Oecologia18: "Chagnon 2018 Oecologia 10.1007/s00442-018-4159-6"
+    JEcol19: "Chagnon 2019 J. Ecol. https://doi.org/10.1111/1365-2745.13207"
 complexes:
     #section Hydrothyriae
     Phydro:
@@ -51,6 +53,8 @@ complexes:
     Ppoly:
         - P. polydactylon
         - P. nana
+        - P. oceanica
+        - P. sumatrana
     #Pdol:
         - P. dolichorrhiza
         - P. pulverulenta
@@ -59,6 +63,7 @@ complexes:
         - P. truculenta
         - P. hawaiensis
         - P. occidentalis
+        - P. scabrosella
     #Pscab:
         - P. scabrosa
         - P. melanorrhiza
@@ -141,6 +146,70 @@ manual_refs:
     KJ413242: Pcan
     KJ413243: Pcan
     KJ413244: Pcan
+    KX897190: Ppoly
+    KX897333: Ppoly
+    KX897334: Ppoly
+    KX897335: Ppoly
+    KX897336: Ppoly
+    KX897337: Ppoly
+    KX897338: Ppoly
+    KX897339: Ppoly
+    KX897340: Ppoly
+    KX897341: Ppoly
+    KX897342: Ppoly
+    KX897343: Ppoly
+    KX897344: Ppoly
+    KX897345: Ppoly
+    KX897346: Ppoly
+    KX897347: Ppoly
+    KX897348: Ppoly
+    KX897349: Ppoly
+    KX897350: Ppoly
+    KX897351: Ppoly
+    KX897352: Ppoly
+    KX897353: Ppoly
+    KX897354: Ppoly
+    KX897355: Ppoly
+    KX897356: Ppoly
+    KX897357: Ppoly
+    KX897358: Ppoly
+    KX897359: Ppoly
+    KX897360: Ppoly
+    KX897361: Ppoly
+    KX897362: Ppoly
+    KX897363: Ppoly
+    KX897364: Ppoly
+    KX897365: Ppoly
+    KX897366: Ppoly
+    KX897367: Ppoly
+    KX897368: Ppoly
+    KX897369: Ppoly
+    KX897370: Ppoly
+    KX897371: Ppoly
+    KX897372: Ppoly
+    KX897373: Ppoly
+    KX897374: Ppoly
+    KX897375: Ppoly
+    KX897376: Ppoly
+    KX897377: Ppoly
+    KX897378: Ppoly
+    KX897379: Ppoly
+    KX897380: Ppoly
+    KX897381: Ppoly
+    KX897382: Ppoly
+    KX897383: Ppoly
+    KX897384: Ppoly
+    KX897385: Ppoly
+    KX897386: Ppoly
+    KX897387: Ppoly
+    KX897388: Ppoly
+    KX897389: Ppoly
+    KX897390: Ppoly
+    KX897391: Ppoly
+    KX897392: Ppoly
+    KX897393: Ppoly
+    KX897394: Ppoly
+    
 excluded_query:
     - SLJ4375_Peltigera_ponojensis_ITS4_RevComp
     - SLJ4360_Peltigera_islandica_ITS4_RevComp
