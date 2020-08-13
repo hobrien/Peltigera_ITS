@@ -82,7 +82,8 @@ def separate_seqs(sequence_files, complexes, lookup, excluded, manual_refs={}):
                 key = manual_refs[seq_record.id.split('.')[0]]
             else:
                 if lookup == 'species':
-                    id = ' '.join(['P.', seq_record.description.split(' ')[2]])
+                    id = ' '.join([seq_record.description.split(' ')[1][0] + '.',
+                                   seq_record.description.split(' ')[2]])
                 elif lookup == 'description':
                     id = seq_record.description
                 else:
@@ -112,7 +113,7 @@ if __name__ == '__main__':
     }
     complexes = invert_list_dict(complexes)
     lookup = make_lookup_table(["blast/ITS_Aug17.bl", "blast/ITS_Aug18.bl"], complexes)
-    for key in lookup:
-        print(key, lookup[key])
+    for key in lookup[0]:
+        print(key, lookup[0][key])
         
-    print(separate_seqs(["RefSequences/Lichenol16.fa"], complexes, lookup='species'))
+    print(separate_seqs(["RefSequences/Lichenol16.fa"], (complexes, {}), 'species', []))
